@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body id="page-top" class="index">
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBd7aT0tbtbc2YajpbHe39WMCk0il02UFE",
+    authDomain: "logeverything.firebaseapp.com",
+    databaseURL: "https://logeverything.firebaseio.com",
+    projectId: "logeverything",
+    storageBucket: "logeverything.appspot.com",
+    messagingSenderId: "733870370707",
+    appId: "1:733870370707:web:af371502172f6c1fbc4266",
+    measurementId: "G-V7Z87ES0B3"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+<div class="container-fluid">
+    <div id="content">{% block content %}{% endblock %}</div>
+</div>
+</body>
+
+</html>
