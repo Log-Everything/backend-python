@@ -79,8 +79,9 @@ def index():
         contact1.put()
         query = LogEntry.query()
         titles = [c.title for c in query]
+    return flask.redirect(flask.url_for('static', filename='dashboard/index.html'))
+    # return flask.render_template('index.html')
 
-    return flask.render_template('index.html', login_route=flask.url_for('.login'))
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)

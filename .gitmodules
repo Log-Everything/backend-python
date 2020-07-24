@@ -1,0 +1,4 @@
+[submodule "log_everything_web/.flutter"]
+	path = log_everything_web/.flutter
+	url = https://github.com/flutter/flutter.git
+	branch = stable
