@@ -35,6 +35,12 @@ gcloud app deploy
 
 ## Flutter
 
+### Generate classes
+
+```bash
+./flutterw  pub run build_runner build
+```
+
 ### Test
 
 ```bash

@@ -38,9 +38,8 @@ class BlocMenu extends Cubit<BlocMenuState> {
 
   @override
   Future<void> close() async {
-    _subscription?.cancel();
-
-    return await super.close();
+    await _subscription?.cancel();
+    await super.close();
   }
 
   void logOut() {

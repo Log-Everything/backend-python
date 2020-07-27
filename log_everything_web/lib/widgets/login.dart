@@ -61,7 +61,6 @@ class LoginWidgetState extends State<LoginWidget> {
     } catch (e) {
       final snackBar = SnackBar(content: Text(e.toString()));
       Scaffold.of(context).showSnackBar(snackBar);
-      rethrow;
     }
   }
 
@@ -79,7 +78,6 @@ class LoginWidgetState extends State<LoginWidget> {
     } catch (e) {
       final snackBar = SnackBar(content: Text(e.toString()));
       Scaffold.of(context).showSnackBar(snackBar);
-      rethrow;
     }
   }
 
