@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:log_everything_web/dependency_injection.dart';
+import 'package:log_everything_web/repositories/login_repository.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -20,6 +21,8 @@ typedef AuthorizedBuilder = Widget Function(
     BuildContext context, FirebaseUser user);
 
 class LoginWidgetState extends State<LoginWidget> {
+  final _loginRepository = getIt<LoginRepository>();
+
   bool loading = true;
   bool loginSide = true;
   FirebaseUser firebaseUser;
@@ -28,10 +31,11 @@ class LoginWidgetState extends State<LoginWidget> {
   TextEditingController _passwordController;
 
   void _loadData() async {
-    final result = await _auth.currentUser();
-    setState(() {
-      firebaseUser = result;
-      loading = false;
+    _loginRepository.firebaseUser.listen((result) {
+      setState(() {
+        firebaseUser = result;
+        loading = false;
+      });
     });
   }
 
@@ -52,29 +56,11 @@ class LoginWidgetState extends State<LoginWidget> {
   }
 
   Future<void> _loginViaGoogle(BuildContext context) async {
-    print('logging in');
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-
     try {
-      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-      print('logging in 2');
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      print('logging in 3');
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      print('credentials');
-
-      final FirebaseUser user =
-          (await _auth.signInWithCredential(credential)).user;
-      setState(() {
-        firebaseUser = user;
-        loading = false;
-      });
-    } catch (e, st) {
-      print("Error: ${e}");
+      await _loginRepository.loginWithGoogle();
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      Scaffold.of(context).showSnackBar(snackBar);
       rethrow;
     }
   }
@@ -83,31 +69,16 @@ class LoginWidgetState extends State<LoginWidget> {
     print('logging in');
 
     try {
-      final AuthCredential credential = EmailAuthProvider.getCredential(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      print('credentials');
-
-      AuthResult result;
+      final email = _emailController.text;
+      final password = _passwordController.text;
       if (loginSide) {
-        result = await _auth.signInWithCredential(credential);
+        _loginRepository.loginWithEmail(email, password);
       } else {
-        result = await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+        _loginRepository.createEmailAccount(email, password);
       }
-      final FirebaseUser user = result.user;
-
-      setState(() {
-        firebaseUser = user;
-        loading = false;
-      });
     } catch (e) {
       final snackBar = SnackBar(content: Text(e.toString()));
       Scaffold.of(context).showSnackBar(snackBar);
-      print("Error: ${e}");
       rethrow;
     }
   }
